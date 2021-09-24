@@ -4,14 +4,14 @@ pipeline {
     stages {
         stage('build') {
             steps {
-                sh """
+                bat """
                     docker build -t ruby_jenkins_app .
                 """
             }
         }
         stage('run') {
             steps {
-                sh """
+                bat """
                     docker run ruby_jenkins_app
                 """
             }
