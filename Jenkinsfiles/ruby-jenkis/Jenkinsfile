@@ -2,9 +2,18 @@ pipeline {
     agent any
 
     stages {
-        stage('Hello') {
+        stage('build') {
             steps {
-                echo 'Hello World'
+                sh """
+                    docker build -t ruby_jenkins_app .
+                """
+            }
+        }
+        stage('run') {
+            steps {
+                sh """
+                    docker run ruby_jenkins_app
+                """
             }
         }
     }
