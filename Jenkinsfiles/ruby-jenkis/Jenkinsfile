@@ -1,7 +1,24 @@
 pipeline {
     agent any
 
+    parameters {
+    string(name: 'BRANCH', defaultValue: 'main', description: 'ruby-jenkins branch')
+    string(name: 'TAG', defaultValue: 'latest', description: 'image tag')
+  }
+
     stages {
+        stage('Git checkout') {
+      steps {
+        info "== Checking out ${params.BRANCH} =="
+        gitCheckout(
+          branches: params.BRANCH,
+          credentials: [username: 'git', description: 'jenkins/ruby-jenkins'],
+          url: 'git@github.com:Jakub-Kwak/jenkins-ruby.git',
+          additionalBehaviours: [
+            cleanBeforeCheckout: true
+          ])
+        success "== Checked out ${params.BRANCH} at ${gitCommit()}"
+      }
         stage('build') {
             steps {
                 bat """
